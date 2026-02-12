@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentine ❤️</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Poppins", sans-serif;
+            background: pink;
+            overflow-x: hidden;
+            text-align: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-top: 60px;
+            color: #d6004c;
+            font-size: clamp(20px, 5vw, 40px);
+            padding: 0 15px;
+            line-height: 1.4;
+        }
+
+        .btn-container {
+            margin-top: 30px;
+            position: relative;
+            min-height: 60px;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: clamp(16px, 4vw, 18px);
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            touch-action: manipulation;
+        }
+
+        #yesBtn {
+            background: #ff1e75;
+            color: white;
+        }
+
+        #noBtn {
+            background: #ffffff;
+            color: #ff1e75;
+            position: absolute;
+        }
+
+        /* Music Control Button */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #ff1e75, #ff69b4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 30, 117, 0.5);
+            z-index: 2000;
+            transition: all 0.3s ease;
+            touch-action: manipulation;
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(255, 30, 117, 0.7);
+        }
+
+        .music-control .icon {
+            font-size: 24px;
+        }
+
+        .music-info {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: white;
+            padding: 12px 15px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            max-width: 200px;
+        }
+
+        .music-info.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .music-info h4 {
+            color: #ff1e75;
+            margin: 0 0 5px 0;
+            font-size: 12px;
+        }
+
+        .music-info p {
+            color: #555;
+            margin: 0;
+            font-size: 11px;
+        }
+
+        .equalizer-small {
+            display: inline-flex;
+            gap: 2px;
+            align-items: flex-end;
+            height: 10px;
+            margin-left: 5px;
+        }
+
+        .bar-small {
+            width: 2px;
+            background: #ff1e75;
+            animation: equalize 0.6s infinite ease-in-out;
+        }
+
+        .bar-small:nth-child(1) { animation-delay: 0s; height: 3px; }
+        .bar-small:nth-child(2) { animation-delay: 0.2s; height: 6px; }
+        .bar-small:nth-child(3) { animation-delay: 0.4s; height: 5px; }
+
+        @keyframes equalize {
+            0%, 100% { transform: scaleY(0.5); }
+            50% { transform: scaleY(1); }
+        }
+
+        /* Popup Love Letter */
+        .popup {
+            width: 90%;
+            max-width: 350px;
+            padding: 25px 20px;
+            background: white;
+            border-radius: 15px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+
+        .popup h3 {
+            color: #ff1e75;
+            margin-bottom: 15px;
+            font-size: clamp(18px, 5vw, 22px);
+        }
+
+        .popup p {
+            color: #555;
+            line-height: 1.6;
+            font-size: clamp(14px, 3.5vw, 16px);
+        }
+
+        /* Click Me Button */
+        #clickMeBtn {
+            background: #ff69b4;
+            color: white;
+            margin-top: 20px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(255, 105, 180, 0.4);
+            touch-action: manipulation;
+        }
+
+        #clickMeBtn:hover {
+            background: #ff1e75;
+            transform: scale(1.05);
+        }
+
+        /* Image Popup */
+        .image-popup {
+            width: 90%;
+            max-width: 450px;
+            padding: 25px 20px;
+            background: white;
+            border-radius: 20px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            display: none;
+            box-shadow: 0 0 30px rgba(0,0,0,0.4);
+            z-index: 1001;
+            transition: transform 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .image-popup.show {
+            display: block;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .image-popup h2 {
+            color: #ff1e75;
+            margin-bottom: 15px;
+            font-size: clamp(20px, 5vw, 28px);
+        }
+
+        .image-popup img {
+            width: 100%;
+            max-width: 280px;
+            border-radius: 15px;
+            margin: 15px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .image-popup p {
+            color: #555;
+            font-size: clamp(14px, 3.5vw, 16px);
+            line-height: 1.6;
+            margin: 12px 0;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .close-btn {
+            background: #ff1e75;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-size: clamp(14px, 3.5vw, 16px);
+            flex: 1;
+            min-width: 100px;
+            touch-action: manipulation;
+        }
+
+        .close-btn:hover {
+            background: #d6004c;
+        }
+
+        .claim-btn {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #d6004c;
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-size: clamp(14px, 3.5vw, 16px);
+            font-weight: bold;
+            flex: 1;
+            min-width: 100px;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.5);
+            touch-action: manipulation;
+        }
+
+        .claim-btn:hover {
+            background: linear-gradient(135deg, #ffed4e, #ffd700);
+            transform: scale(1.05);
+        }
+
+        /* Gift Popup */
+        .gift-popup {
+            width: 90%;
+            max-width: 500px;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #fff0f5, #ffe6f0);
+            border-radius: 25px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            display: none;
+            box-shadow: 0 0 40px rgba(255, 105, 180, 0.6);
+            z-index: 1002;
+            transition: transform 0.3s ease;
+            border: 3px solid #ff69b4;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .gift-popup.show {
+            display: block;
+            transform: translate(-50%, -50%) scale(1);
+            animation: popIn 0.5s ease;
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: translate(-50%, -50%) scale(0) rotate(-180deg);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.1) rotate(10deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
+            }
+        }
+
+        .gift-popup h2 {
+            color: #ff1e75;
+            margin-bottom: 15px;
+            font-size: clamp(22px, 6vw, 32px);
+            text-shadow: 2px 2px 4px rgba(255, 105, 180, 0.3);
+        }
+
+        .gift-box-icon {
+            font-size: clamp(50px, 15vw, 80px);
+            margin: 15px 0;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .gift-content {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 15px 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .gift-content h3 {
+            color: #ff1e75;
+            margin-bottom: 12px;
+            font-size: clamp(18px, 5vw, 24px);
+        }
+
+        .gift-content ul {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+        }
+
+        .gift-content li {
+            padding: 12px 12px;
+            margin: 8px 0;
+            background: #ffe6f0;
+            border-radius: 10px;
+            color: #555;
+            font-size: clamp(13px, 3.5vw, 16px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            touch-action: manipulation;
+        }
+
+        .gift-content li:hover,
+        .gift-content li:active {
+            background: #ffd1e3;
+            border-color: #ff69b4;
+            transform: translateX(5px);
+        }
+
+        .gift-content li::before {
+            content: "🎁 ";
+            margin-right: 8px;
+        }
+
+        .close-gift-btn {
+            background: linear-gradient(135deg, #ff1e75, #ff69b4);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            font-size: clamp(16px, 4vw, 18px);
+            font-weight: bold;
+            margin-top: 15px;
+            box-shadow: 0 5px 15px rgba(255, 30, 117, 0.4);
+            touch-action: manipulation;
+        }
+
+        .close-gift-btn:hover {
+            background: linear-gradient(135deg, #ff69b4, #ff1e75);
+            transform: scale(1.05);
+        }
+
+        /* Gift Detail Popup */
+        .gift-detail-popup {
+            width: 90%;
+            max-width: 450px;
+            padding: 25px 20px;
+            background: white;
+            border-radius: 20px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            display: none;
+            box-shadow: 0 0 50px rgba(255, 105, 180, 0.7);
+            z-index: 1003;
+            transition: transform 0.3s ease;
+            border: 3px solid #ff69b4;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .gift-detail-popup.show {
+            display: block;
+            transform: translate(-50%, -50%) scale(1);
+            animation: popIn 0.4s ease;
+        }
+
+        .gift-detail-popup h3 {
+            color: #ff1e75;
+            font-size: clamp(20px, 5vw, 26px);
+            margin-bottom: 15px;
+        }
+
+        .gift-detail-popup .detail-icon {
+            font-size: clamp(40px, 12vw, 60px);
+            margin: 12px 0;
+        }
+
+        .gift-detail-popup .detail-content {
+            background: #fff5f8;
+            padding: 18px;
+            border-radius: 15px;
+            margin: 15px 0;
+            color: #555;
+            line-height: 1.8;
+            text-align: left;
+        }
+
+        .gift-detail-popup .detail-content p {
+            margin: 10px 0;
+            font-size: clamp(13px, 3.5vw, 15px);
+        }
+
+        .back-btn {
+            background: #ff69b4;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-size: clamp(14px, 3.5vw, 16px);
+            margin-top: 12px;
+            touch-action: manipulation;
+        }
+
+        .back-btn:hover {
+            background: #ff1e75;
+        }
+
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 999;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+
+        /* Floating Hearts Animation */
+        .heart {
+            position: fixed;
+            bottom: -10px;
+            color: red;
+            font-size: clamp(16px, 4vw, 20px);
+            animation: floatUp 4s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes floatUp {
+            from {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(-100vh);
+                opacity: 0;
+            }
+        }
+
+        /* Confetti Animation */
+        .confetti {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: #ff69b4;
+            top: -10px;
+            animation: fall 3s linear;
+            z-index: 1003;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Welcome overlay */
+        .welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            padding: 20px;
+        }
+
+        .welcome-box {
+            background: white;
+            padding: 30px 25px;
+            border-radius: 25px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .welcome-box h2 {
+            color: #ff1e75;
+            font-size: clamp(22px, 6vw, 28px);
+            margin-bottom: 15px;
+        }
+
+        .welcome-box p {
+            color: #555;
+            font-size: clamp(14px, 3.5vw, 16px);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #ff1e75, #ff69b4);
+            color: white;
+            padding: 14px 35px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            font-size: clamp(16px, 4vw, 18px);
+            font-weight: bold;
+            box-shadow: 0 5px 20px rgba(255, 30, 117, 0.4);
+            transition: all 0.3s ease;
+            touch-action: manipulation;
+        }
+
+        .start-btn:hover,
+        .start-btn:active {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 30, 117, 0.6);
+        }
+
+        /* Mobile specific adjustments */
+        @media (max-width: 480px) {
+            h1 {
+                margin-top: 40px;
+            }
+
+            .btn-container {
+                margin-top: 25px;
+            }
+
+            .music-control {
+                bottom: 15px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+            }
+
+            .music-info {
+                bottom: 70px;
+                right: 15px;
+            }
+
+            .heart {
+                font-size: 16px;
+            }
+        }
+
+        /* Landscape mobile */
+        @media (max-height: 500px) and (orientation: landscape) {
+            h1 {
+                margin-top: 20px;
+                font-size: 18px;
+            }
+
+            .btn-container {
+                margin-top: 15px;
+            }
+
+            .popup,
+            .image-popup,
+            .gift-popup,
+            .gift-detail-popup {
+                max-height: 95vh;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Welcome Overlay -->
+    <div class="welcome-overlay" id="welcomeOverlay">
+        <div class="welcome-box">
+            <h2>🎵 Welcome! 💕</h2>
+            <p>Selamat datang di Valentine special! Website ini akan memutar musik romantic untuk menemanimu. 🎶</p>
+            <p style="font-size: clamp(12px, 3vw, 14px); color: #999;">*Pastikan volume perangkatmu menyala</p>
+            <button class="start-btn" onclick="startExperience()">Mulai 💖</button>
+        </div>
+    </div>
+
+    <h1>You're my girlfriend, yes?
+    Don't even think about choosing "No"—I know he dodge it again 😜
+    </h1>
+   
+
+    <div class="btn-container">
+        <button id="yesBtn">Yes ❤️</button>
+        <button id="noBtn">No 😭</button>
+    </div>
+
+    <!-- Music Control Button -->
+    <div class="music-control" id="musicControl" onclick="toggleMusic()">
+        <span class="icon" id="musicIcon">🎵</span>
+    </div>
+
+    <!-- Music Info -->
+    <div class="music-info" id="musicInfo">
+        <h4>
+            Now Playing 
+            <span class="equalizer-small">
+                <div class="bar-small"></div>
+                <div class="bar-small"></div>
+                <div class="bar-small"></div>
+            </span>
+        </h4>
+        <p id="songTitle">Best part - Daniel caesar</p>
+    </div>
+
+    <!-- Love Letter Popup -->
+    <div class="popup" id="lovePopup">
+        <h3>💌 My Love</h3>
+        <p>
+            Happy Valentine's Day!  
+            Aku bersyukur banget bisa kenal sama kamu.  
+            Terima kasih udah jadi orang yang green flag abiezzz untuku ❤️
+        </p>
+        <button id="clickMeBtn">Klik Aku 🎁</button>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Image Popup -->
+    <div class="image-popup" id="imagePopup">
+        <h2>Surprise! 🎉💕</h2>
+        <img src="ft.png" alt="Cute Valentine">
+        <p><strong>Kamu adalah alasan tersenyumku setiap hari! 😊</strong></p>
+        <p>Selamat hari Valentine semoga kita ketemu di Valentine berikutnya . Love you always! 💖✨</p>
+        <div class="button-group">
+            <button class="close-btn" id="closeImageBtn">Tutup ❤️</button>
+            <button class="claim-btn" id="claimBtn">Claim Hadiah 🎁</button>
+        </div>
+    </div>
+
+    <!-- Gift Popup -->
+    <div class="gift-popup" id="giftPopup">
+        <div class="gift-box-icon">🎁</div>
+        <div class="gift-content">
+            <h3>💝 Special Valentine Package</h3>
+            <p style="color: #ff69b4; font-size: clamp(12px, 3vw, 14px); margin-bottom: 15px;">✨ Klik setiap hadiah untuk melihat detailnya!</p>
+            <ul>
+                <li onclick="showGiftDetail('letter')">💌 Love letter yang ditulis khusus untukmu</li>
+                <li onclick="showGiftDetail('rose')">🌹 Setangkai mawar virtual yang tak akan layu</li>
+                <li onclick="showGiftDetail('lifetime')">⭐ A lifetime of my love and affection</li>
+            </ul>
+        </div>
+        <p style="color: #ff1e75; font-size: clamp(16px, 4vw, 18px); margin-top: 15px;">
+        </p>
+        <button class="close-gift-btn" id="closeGiftBtn">Terima Hadiah 💕</button>
+    </div>
+
+    <!-- Gift Detail Popup -->
+    <div class="gift-detail-popup" id="giftDetailPopup">
+        <h3 id="detailTitle">Detail Hadiah</h3>
+        <div class="detail-icon" id="detailIcon">🎁</div>
+        <div class="detail-content" id="detailContent">
+            <p>Klik salah satu hadiah untuk melihat detailnya!</p>
+        </div>
+        <button class="back-btn" onclick="closeGiftDetail()">Kembali</button>
+    </div>
+
+    <!-- Hidden Audio Element -->
+    <audio id="bgMusic" loop>
+       <source src="vd.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const bgMusic = document.getElementById('bgMusic');
+        let isMusicPlaying = false;
+        const musicInfo = document.getElementById('musicInfo');
+        let infoTimeout;
+
+        // Start experience
+        function startExperience() {
+            document.getElementById('welcomeOverlay').style.display = 'none';
+            
+            // Auto play music
+            bgMusic.play().then(() => {
+                isMusicPlaying = true;
+                updateMusicIcon();
+                showMusicInfo();
+            }).catch(error => {
+                console.log("Autoplay prevented:", error);
+                // If autoplay is blocked, user can still click the music button
+            });
+        }
+
+        // Toggle music
+        function toggleMusic() {
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                isMusicPlaying = false;
+                musicInfo.classList.remove('show');
+            } else {
+                bgMusic.play();
+                isMusicPlaying = true;
+                showMusicInfo();
+            }
+            updateMusicIcon();
+        }
+
+        // Update music icon
+        function updateMusicIcon() {
+            const icon = document.getElementById('musicIcon');
+            icon.textContent = isMusicPlaying ? '🎵' : '🔇';
+        }
+
+        // Show music info temporarily
+        function showMusicInfo() {
+            musicInfo.classList.add('show');
+            
+            clearTimeout(infoTimeout);
+            infoTimeout = setTimeout(() => {
+                musicInfo.classList.remove('show');
+            }, 5000);
+        }
+
+        // Show music info on hover/touch
+        document.getElementById('musicControl').addEventListener('mouseenter', () => {
+            if (isMusicPlaying) {
+                musicInfo.classList.add('show');
+            }
+        });
+
+        document.getElementById('musicControl').addEventListener('touchstart', (e) => {
+            if (isMusicPlaying) {
+                musicInfo.classList.add('show');
+                setTimeout(() => {
+                    musicInfo.classList.remove('show');
+                }, 3000);
+            }
+        });
+
+        document.getElementById('musicControl').addEventListener('mouseleave', () => {
+            clearTimeout(infoTimeout);
+            infoTimeout = setTimeout(() => {
+                musicInfo.classList.remove('show');
+            }, 2000);
+        });
+
+        // Gift details data
+        const giftDetails = {
+            letter: {
+                icon: '💌',
+                title: 'Love Letter Khusus',
+                content: `
+                    <p><strong>My Dearest Love,</strong></p>
+                    <p>Setiap hari bersamamu adalah berkah yang tak ternilai. Kamu memberikan warna dalam hidupku yang sebelumnya hitam putih.</p>
+                    <p>Senyummu adalah matahari yang menerangi hariku, tawamu adalah musik terindah yang pernah kudengar.</p>
+                    <p>Aku berjanji akan selalu berusaha membuatmu bahagia, melindungimu, dan mencintaimu dengan sepenuh hatiku.</p>
+                    <p><em>Forever yours,</em><br>❤️ Your Valentine</p>
+                `
+            },
+            rose: {
+                icon: '🌹',
+                title: 'Mawar Virtual Abadi',
+                content: `
+                    <p>🌹 <strong>Mawar merah yang tak akan pernah layu</strong></p>
+                    <p>Seperti cintaku padamu yang akan tetap segar selamanya, mawar virtual ini melambangkan:</p>
+                    <p>❤️ Cinta yang abadi dan tak terbatas</p>
+                    <p>💖 Kesetiaan yang tak tergoyahkan</p>
+                    <p>✨ Keindahan hubungan kita yang terus berkembang</p>
+                    <p>Setiap kelopak mewakili alasan mengapa aku mencintaimu!</p>
+                `
+            },
+            lifetime: {
+                icon: '⭐',
+                title: 'Cinta Selamanya',
+                content: `
+                    <p>⭐ <strong>A Lifetime Promise</strong></p>
+                    <p>Aku berjanji untuk memberikanmu:</p>
+                    <p>💫 Cinta yang tulus setiap hari</p>
+                    <p>💫 Dukungan dalam setiap langkahmu</p>
+                    <p>💫 Tawa dan kebahagiaan tanpa batas</p>
+                    <p>💫 Bahu untuk bersandar di saat sulit</p>
+                    <p>💫 Petualangan hidup yang tak terlupakan</p>
+                    <p><em>From this day forward, until forever... ∞</em></p>
+                `
+            },
+        };
+
+        // Floating Hearts
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+            heart.innerHTML = "❤️";
+            heart.style.left = Math.random() * window.innerWidth + "px";
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 4000);
+        }
+        setInterval(createHeart, 300);
+
+        // Confetti Effect
+        function createConfetti() {
+            const colors = ['#ff69b4', '#ff1e75', '#ffd700', '#ff6b9d', '#ffc3e1'];
+            const confettiCount = window.innerWidth < 768 ? 30 : 50; // Less confetti on mobile
+            
+            for (let i = 0; i < confettiCount; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement("div");
+                    confetti.classList.add("confetti");
+                    confetti.style.left = Math.random() * window.innerWidth + "px";
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 2 + "s";
+                    document.body.appendChild(confetti);
+
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 3000);
+                }, i * 30);
+            }
+        }
+
+        // Show gift detail
+        function showGiftDetail(giftType) {
+            const detail = giftDetails[giftType];
+            document.getElementById('detailTitle').textContent = detail.title;
+            document.getElementById('detailIcon').textContent = detail.icon;
+            document.getElementById('detailContent').innerHTML = detail.content;
+            document.getElementById('giftDetailPopup').classList.add('show');
+        }
+
+        // Close gift detail
+        function closeGiftDetail() {
+            document.getElementById('giftDetailPopup').classList.remove('show');
+        }
+
+        // Popup Logic
+        const yesBtn = document.getElementById("yesBtn");
+        const noBtn = document.getElementById("noBtn");
+        const popup = document.getElementById("lovePopup");
+        const clickMeBtn = document.getElementById("clickMeBtn");
+        const imagePopup = document.getElementById("imagePopup");
+        const overlay = document.getElementById("overlay");
+        const closeImageBtn = document.getElementById("closeImageBtn");
+        const claimBtn = document.getElementById("claimBtn");
+        const giftPopup = document.getElementById("giftPopup");
+        const closeGiftBtn = document.getElementById("closeGiftBtn");
+
+        yesBtn.onclick = () => {
+            popup.style.display = "block";
+            overlay.classList.add("show");
+        }
+
+        // Click Me Button
+        clickMeBtn.onclick = () => {
+            popup.style.display = "none";
+            overlay.classList.add("show");
+            imagePopup.classList.add("show");
+        }
+
+        // Close Image Popup
+        closeImageBtn.onclick = () => {
+            overlay.classList.remove("show");
+            imagePopup.classList.remove("show");
+        }
+
+        // Claim Button
+        claimBtn.onclick = () => {
+            imagePopup.classList.remove("show");
+            giftPopup.classList.add("show");
+            createConfetti();
+        }
+
+        // Close Gift Popup
+        closeGiftBtn.onclick = () => {
+            overlay.classList.remove("show");
+            giftPopup.classList.remove("show");
+        }
+
+        overlay.onclick = () => {
+            overlay.classList.remove("show");
+            popup.style.display = "none";
+            imagePopup.classList.remove("show");
+            giftPopup.classList.remove("show");
+            closeGiftDetail();
+        }
+
+        // No Button Running Away - Mobile friendly
+        let lastMoveTime = 0;
+        const moveDelay = 100; // Prevent too frequent moves on mobile
+
+        function moveNoButton() {
+            const now = Date.now();
+            if (now - lastMoveTime < moveDelay) return;
+            lastMoveTime = now;
+
+            const maxX = window.innerWidth - 120;
+            const maxY = window.innerHeight - 80;
+            const x = Math.random() * Math.max(maxX, 50);
+            const y = Math.random() * Math.max(maxY, 50);
+            
+            noBtn.style.left = x + "px";
+            noBtn.style.top = y + "px";
+        }
+
+        noBtn.onmouseover = moveNoButton;
+        noBtn.ontouchstart = (e) => {
+            e.preventDefault();
+            moveNoButton();
+        };
+    </script>
+
+</body>
+</html>
